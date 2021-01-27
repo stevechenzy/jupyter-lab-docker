@@ -3,7 +3,7 @@ RUN apt update \
 && pip install jupyterlab
 
 FROM jupyter-base as r-base
-RUN apt install -y  apt-transport-https ca-certificates software-properties-common gnupg2 libcurl4-openssl-dev libxml2-dev libpoppler-cpp-dev libssl-dev curl \
+RUN apt install -y  apt-transport-https ca-certificates software-properties-common gnupg2 libcurl4-openssl-dev libxml2-dev libpoppler-cpp-dev libssl-dev curl locales\
 && add-apt-repository "deb http://cloud.r-project.org/bin/linux/debian buster-cran40/ " \
 && apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' \
 && apt update \
@@ -11,7 +11,13 @@ RUN apt install -y  apt-transport-https ca-certificates software-properties-comm
 && cd ~ \
 && curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
 && bash nodesource_setup.sh \
-apt install -y nodejs
+&& apt install -y nodejs \
+# Uncomment en_US.UTF-8 for inclusion in generation
+&& sed -i 's/^# *\(en_GB.UTF-8\)/\1/' /etc/locale.gen \
+&& sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+&& sed -i 's/^# *\(zh_CN.UTF-8\)/\1/' /etc/locale.gen \
+# Generate locale
+locale-gen
 RUN mkdir -p /app/notebooks
 WORKDIR /app
 COPY . .
@@ -23,7 +29,6 @@ COPY . .
 RUN pip install -r requirement.txt
 RUN Rscript install_packages.r
 RUN mkdir -p /root/.jupyter && mv ./jupyter_server_config.json /root/.jupyter/
-RUN 
 
 EXPOSE 8888
 ENTRYPOINT ["/app/start_app.sh"]
