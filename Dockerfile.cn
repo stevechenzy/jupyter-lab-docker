@@ -13,7 +13,7 @@ RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
 && cd ~ \
 && curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
 && bash nodesource_setup.sh \
-&& apt install -y nodejs 
+&& apt install -y nodejs
 # install extensions for jupyter lab
 RUN pip install --upgrade jupyterlab jupyterlab-git \
 && jupyter labextension install @techrah/text-shortcuts \
@@ -33,7 +33,7 @@ RUN apt update \
 # Generate locale
 && locale-gen
 
-RUN mkdir -p /app/notebooks
+RUN mkdir -p /app
 WORKDIR /app
 COPY . .
 RUN Rscript irkernel.r

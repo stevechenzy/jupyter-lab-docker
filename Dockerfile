@@ -23,7 +23,7 @@ RUN apt update \
 && sed -i 's/^# *\(zh_CN.UTF-8\)/\1/' /etc/locale.gen \
 && locale-gen
 
-RUN mkdir -p /app/notebooks
+RUN mkdir -p /app
 WORKDIR /app
 COPY . .
 RUN Rscript irkernel.r
