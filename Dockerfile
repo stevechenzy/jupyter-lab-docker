@@ -1,6 +1,7 @@
 FROM python:slim as python-base
 RUN apt update \
-&& apt install -y  apt-transport-https ca-certificates software-properties-common gnupg2 libcurl4-openssl-dev libxml2-dev libpoppler-cpp-dev libssl-dev curl locales
+&& apt install -y  apt-transport-https ca-certificates software-properties-common gnupg2 \
+libcurl4-openssl-dev libxml2-dev libpoppler-cpp-dev libssl-dev curl locales git
 
 FROM python-base as jupyter-base
 RUN pip install jupyterlab \
@@ -9,6 +10,7 @@ RUN pip install jupyterlab \
 && bash nodesource_setup.sh \
 && apt install -y nodejs
 RUN pip install --upgrade jupyterlab jupyterlab-git \
+&& pip install --upgrade jupyterlab-git==0.30.0b1 \
 && jupyter labextension install @techrah/text-shortcuts \
 && jupyter lab build \
 && jupyter labextension enable

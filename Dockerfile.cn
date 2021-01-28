@@ -3,7 +3,8 @@ FROM python:slim as python-base
 RUN sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list
 # RUN sed -i "s/deb.debian.org/mirrors.cloud.tencent.com/g" /etc/apt/sources.list
 RUN apt update \
-&& apt install -y  apt-transport-https ca-certificates software-properties-common gnupg2 libcurl4-openssl-dev libxml2-dev libpoppler-cpp-dev libssl-dev curl locales
+&& apt install -y  apt-transport-https ca-certificates software-properties-common gnupg2 \
+libcurl4-openssl-dev libxml2-dev libpoppler-cpp-dev libssl-dev curl locales git
 
 FROM python-base as jupyter-base
 # 使用清华大学的pypi镜像，提高构建速度
@@ -16,6 +17,7 @@ RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
 && apt install -y nodejs
 # install extensions for jupyter lab
 RUN pip install --upgrade jupyterlab jupyterlab-git \
+&& pip install --upgrade jupyterlab-git==0.30.0b1 \
 && jupyter labextension install @techrah/text-shortcuts \
 && jupyter lab build \
 && jupyter labextension enable
