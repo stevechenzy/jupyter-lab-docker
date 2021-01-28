@@ -44,9 +44,9 @@ FROM r-base as data-science
 WORKDIR /app
 COPY . .
 RUN pip install -r requirement.txt \
-&& Rscript install_packages.r \
-&& mkdir -p /root/.jupyter && mv ./jupyter_server_config.json /root/.jupyter/  \
-&& rm Dockerfile*.*.r *.txt
+&& Rscript install_packages.r
+RUN mkdir -p /root/.jupyter && mv ./jupyter_server_config.json /root/.jupyter/ \
+&& rm *.r *.txt
 
 EXPOSE 8888
 ENTRYPOINT ["/app/start_app.sh"]
