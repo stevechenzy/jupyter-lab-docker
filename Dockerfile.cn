@@ -9,17 +9,23 @@ FROM python-base as jupyter-base
 # 使用清华大学的pypi镜像，提高构建速度
 RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
 && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
-&& pip install jupyterlab
+&& pip install jupyterlab \
+&& cd ~ \
+&& curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
+&& bash nodesource_setup.sh \
+&& apt install -y nodejs 
+# install extensions for jupyter lab
+RUN pip install --upgrade jupyterlab jupyterlab-git \
+&& jupyter labextension install @techrah/text-shortcuts \
+&& jupyter lab build \
+&& jupyter labextension enable
 
 FROM jupyter-base as r-base
 # 构建R4.0
 RUN add-apt-repository "deb http://cloud.r-project.org/bin/linux/debian buster-cran40/ " \
-&& apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' \
+&& apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF'
+RUN apt update \
 && apt install -y r-base r-base-dev \
-&& cd ~ \
-&& curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
-&& bash nodesource_setup.sh \
-&& apt install -y nodejs \
 # Uncomment en_US.UTF-8 for inclusion in generation
 && sed -i 's/^# *\(en_GB.UTF-8\)/\1/' /etc/locale.gen \
 && sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
