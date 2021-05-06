@@ -48,5 +48,18 @@ RUN pip install -r requirement.txt \
 RUN mkdir -p /root/.jupyter && mv ./jupyter_server_config.json /root/.jupyter/ \
 && rm *.r *.txt
 
+FROM data-science as ipy-plot-base
+# add kite for code completion
+RUN apt install wget \
+&& bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)" \
+&& python -m pip install --upgrade pip \
+&& pip install "jupyterlab-kite>=2.0.2" \
+
+# add ipympl for better support of matplotlib
+&& pip install ipympl \
+# add ipywidgets for interactive 
+&& pip pip install ipywidgets
+
+
 EXPOSE 8888
 ENTRYPOINT ["/app/start_app.sh"]
