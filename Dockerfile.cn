@@ -8,7 +8,8 @@ libcurl4-openssl-dev libxml2-dev libpoppler-cpp-dev libssl-dev curl locales git
 
 FROM python-base as jupyter-base
 # 使用清华大学的pypi镜像，提高构建速度
-RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+RUN python -m pip install --upgrade pip \
+&& pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
 && pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn \
 && pip install jupyterlab \
 && cd ~ \
@@ -51,14 +52,12 @@ RUN mkdir -p /root/.jupyter && mv ./jupyter_server_config.json /root/.jupyter/ \
 FROM data-science as ipy-plot-base
 # add kite for code completion
 RUN apt install wget \
-&& bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)" \
-&& python -m pip install --upgrade pip \
+&& echo '\n y\n \n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)" \
 && pip install "jupyterlab-kite>=2.0.2" \
-
 # add ipympl for better support of matplotlib
 && pip install ipympl \
-# add ipywidgets for interactive 
-&& pip pip install ipywidgets
+# add ipywidgets for interactive
+&& pip install ipywidgets
 
 
 EXPOSE 8888

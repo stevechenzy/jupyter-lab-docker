@@ -4,7 +4,8 @@ RUN apt update \
 libcurl4-openssl-dev libxml2-dev libpoppler-cpp-dev libssl-dev curl locales git
 
 FROM python-base as jupyter-base
-RUN pip install jupyterlab \
+RUN python -m pip install --upgrade pip \
+&& pip install jupyterlab \
 && cd ~ \
 && curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh \
 && bash nodesource_setup.sh \
@@ -42,13 +43,12 @@ RUN mkdir -p /root/.jupyter && mv ./jupyter_server_config.json /root/.jupyter/ \
 FROM data-science as ipy-plot-base
 # add kite for code completion
 RUN apt install wget \
-&& bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)" \
-&& python -m pip install --upgrade pip \
+&& echo '\n y\n \n' | bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)" \
 && pip install "jupyterlab-kite>=2.0.2" \
 # add ipympl for better support of matplotlib
 && pip install ipympl \
 # add ipywidgets for interactive 
-&& pip pip install ipywidgets
+&& pip install ipywidgets
 
 
 EXPOSE 8888
