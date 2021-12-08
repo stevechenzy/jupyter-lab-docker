@@ -94,5 +94,8 @@ jupyterlab-topbar-extension jupyterlab-system-monitor \
 @techrah/text-shortcuts \
 && RUN jupyter lab build && jupyter labextension enable
 
+WORKDIR /app
+RUN rm *.r *.txt
+
 EXPOSE 8888
 ENTRYPOINT ["/app/start_app.sh"]

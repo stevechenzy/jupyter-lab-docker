@@ -78,5 +78,6 @@ jupyterlab-topbar-extension jupyterlab-system-monitor \
 WORKDIR /app
 RUN rm *.r *.txt
 
+
 EXPOSE 8888
 ENTRYPOINT ["/app/start_app.sh"]
