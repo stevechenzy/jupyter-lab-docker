@@ -1,0 +1,16 @@
+ipympl
+ipysheet
+jupyterlab-drawio
+ipywidgets
+jupyter-kite
+jupyterlab_code_formatter
+isort 
+black 
+autopep8
+jupyterlab-github
+jupyterlab_latex
+jupyter_bokeh
+jupyterlab_sql
+nbresuse
+plotly
+xeus-python

@@ -1,6 +1,4 @@
 # Function to install package R
-# adding local mirror for speedup the downloading 
-options(repos=structure(c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))) 
 # basic package from RStudio
 install.packages("tidyverse", dependencies = TRUE)
 install.packages("pdftools", dependencies = TRUE)
